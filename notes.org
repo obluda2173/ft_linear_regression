@@ -37,3 +37,7 @@ the result of your hard work !
 - A program that calculates the precision of your algorithm.
 
 * Introduction
+
+* Resources
+- [[https://medium.com/data-science-collective/linear-regression-from-scratch-in-python-ee1a955e49ed][Informative Medium article on linear regression from scratch]]
+- [[https://www.youtube.com/watch?v=nk2CQITm_eo][Video on linear regression explanation]]

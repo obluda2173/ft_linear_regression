@@ -18,12 +18,16 @@ print("Mean value of price: ", mean.loc["price"])
 # putting values in x_arr and y_arr
 x_arr = np.array(df.get("km"))
 y_arr = np.array(df.get("price"))
+
 print(x_arr)
 print(y_arr)
 
+
+# n = len(y_arr)
+
 # getting intersection point and gradient
 # I should rewrite it myself
-m, k = np.polyfit(x_arr, y_arr, deg = 1)
+slope, intercept = np.polyfit(x_arr, y_arr, deg = 1)
 
-plt.plot(x_arr, y_arr, "yo", x_arr, m*x_arr+k, "--k")
+plt.plot(x_arr, y_arr, "yo", x_arr, slope * x_arr + intercept, "--k")
 plt.show()
