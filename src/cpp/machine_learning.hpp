@@ -7,38 +7,37 @@
 #include <string>
 #include <vector>
 
+// python
+// #include <pybind11/pybind11.h>
+// #include <pybind11/numpy.h>
+
 struct Thetas {
     double theta0 = 0;
     double theta1 = 0;
 };
 
-struct Data {
-    int milage;
-    int price;
-};
-
 class BGD {
     public:
         std::string filename;
-        std::vector<Data> data;
         int epoches;
-        int learning_rate;
+        double learning_rate;
         int m;
-        std::vector<int> price;
-        std::vector<int> milage;
-        std::vector<int> predictions;
+        std::vector<double> price;
+        std::vector<double> milage;
+        std::vector<double> predictions;
         Thetas tmp_thetas;
         Thetas thetas;
 
     BGD();
-    BGD(char* filename, int learning_rate, int milage[], int price[]);
+    BGD(std::string filename, double learning_rate, int epoches);
+    ~BGD();
 
     void extract_data();
     double calculate_theta0();
     double calculate_theta1();
     void update_predictions();
     void update_thetas();
-    Thetas batch_gradient_descent();
+    void batch_gradient_descent();
 };
 
 std::vector<int> arr_to_vec(int arr[]);

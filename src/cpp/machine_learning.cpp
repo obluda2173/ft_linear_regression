@@ -1,24 +1,16 @@
 #include "machine_learning.hpp"
 
-BGD::BGD(char* filename, int learning_rate, int milage[], int price[]) {
+BGD::BGD() {}
+
+BGD::BGD(std::string filename, double learning_rate, int epoches) {
     this->filename = filename;
-    this->epoches = 100; // TODO: make it parameter of constructor
+    this->epoches = epoches;
     this->learning_rate = learning_rate;
+    this->extract_data();
     this->m = sizeof(milage) / sizeof(milage[0]);
-    this->price = arr_to_vec(price);
-    this->milage = arr_to_vec(milage);
 }
 
-std::vector<int> arr_to_vec(int arr[]) {
-    std::vector<int> vec;
-    int len = sizeof(arr) / sizeof(arr[0]);
-
-    for (int i = 0; i < len; i++) {
-        vec.push_back(arr[i]);
-    }
-
-    return vec;
-}
+BGD::~BGD() {}
 
 void BGD::extract_data() {
     std::ifstream csv_file(this->filename);
@@ -36,31 +28,35 @@ void BGD::extract_data() {
         int milage = std::stod(s_milage);
         int price = std::stod(s_price);
 
-        this->data.push_back({milage, price});
+        std::cout << milage << std::endl;
+
+        this->milage.push_back(milage);
+        this->price.push_back(price);
+        this->predictions.push_back(0.0);
     }
 }
 
-int substraction(int nbr1, int nbr2) {
+double substraction(int nbr1, int nbr2) {
     return nbr1 - nbr2;
 }
 
 double BGD::calculate_theta0() {
-    int summ = 0;
+    double summ = 0;
 
-    for (int i = 0; i < this->epoches; i++) {
-       summ += substraction(this->predictions[i], this->price[i]);
+    for (int i = 0; i < this->m; i++) {
+        summ += substraction(this->predictions[i], this->price[i]);
     }
-    summ *= this->learning_rate * (1/this->m);
+    summ *= this->learning_rate * (1.0/this->m);
     return summ;
 }
 
 double BGD::calculate_theta1() {
-    int summ = 0;
+    double summ = 0;
 
-    for (int i = 0; i < this->epoches; i++) {
-       summ += substraction(this->predictions[i], this->price[i]) * this->milage[i];
+    for (int i = 0; i < this->m; i++) {
+        summ += substraction(this->predictions[i], this->price[i]) * this->milage[i];
     }
-    summ *= this->learning_rate * (1/this->m);
+    summ *= this->learning_rate * (1.0/this->m);
     return summ;
 }
 
@@ -78,18 +74,31 @@ void BGD::update_thetas() {
     this->thetas.theta1 = this->thetas.theta1 - this->tmp_thetas.theta1;
 }
 
-Thetas BGD::batch_gradient_descent() {
-
+void BGD::batch_gradient_descent() {
     for (int epoch = 0; epoch < this->epoches; epoch++) {
         this->tmp_thetas.theta0 = this->calculate_theta0();
         this->tmp_thetas.theta1 = this->calculate_theta1();
-
-        this->thetas.theta0 = this->thetas.theta0 - this->tmp_thetas.theta0;
-        this->thetas.theta1 = this->thetas.theta1 - this->tmp_thetas.theta1;
 
         this->update_predictions();
         this->update_thetas();
     }
 
-    return this->thetas;
+}
+
+int main(int ac, char** av) {
+    if (ac != 2) {
+        std::cout << "Wrong amount of arguments" << std::endl;
+        exit(1);
+    }
+
+    std::string filename = "../../data/data.csv";
+    BGD bgd = BGD(filename, 0.2, 100);
+
+    bgd.batch_gradient_descent();
+
+    double expected_price = atoi(av[1]) * bgd.thetas.theta1 + bgd.thetas.theta0;
+
+    std::cout << "Expected price: " << expected_price << std::endl;
+
+    return 0;
 }
