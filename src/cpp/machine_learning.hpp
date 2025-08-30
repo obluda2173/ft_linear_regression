@@ -2,28 +2,41 @@
 #define MACHINE_LEARNING_H_
 
 #include <iostream>
+#include <fstream>
+#include <string>
 #include <vector>
 
-struct t_thetas {
+struct Thetas {
     double theta0 = 0;
     double theta1 = 0;
-} s_thetas;
+};
 
-class t_data {
+struct Data {
+    int milage;
+    int price;
+};
+
+class BGD {
     public:
+        std::string filename;
+        std::vector<Data> data;
         int epoches;
         int learning_rate;
+        int m;
         std::vector<int> price;
         std::vector<int> milage;
         std::vector<int> predictions;
-        int m;
-        t_thetas tmp_thetas;
-        t_thetas thetas;
+        Thetas tmp_thetas;
+        Thetas thetas;
 
+    BGD();
+    BGD(char* filename, int learning_rate, int milage[], int price[]);
+
+    void extract_data();
     double calculate_theta0();
     double calculate_theta1();
     void update_predictions();
-    t_thetas batch_gradient_descent(t_data data);
-} s_data;
+    Thetas batch_gradient_descent();
+};
 
 #endif // MACHINE_LEARNING_H_
