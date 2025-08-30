@@ -22,7 +22,6 @@ y_arr = np.array(df.get("price"))
 print(x_arr)
 print(y_arr)
 
-
 # n = len(y_arr)
 
 # getting intersection point and gradient
