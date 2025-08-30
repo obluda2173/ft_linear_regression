@@ -12,8 +12,8 @@
 // #include <pybind11/numpy.h>
 
 struct Thetas {
-    double theta0 = 0;
-    double theta1 = 0;
+    double theta0 = 0.0;
+    double theta1 = 0.0;
 };
 
 class BGD {

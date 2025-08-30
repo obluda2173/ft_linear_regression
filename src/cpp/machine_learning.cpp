@@ -7,7 +7,7 @@ BGD::BGD(std::string filename, double learning_rate, int epoches) {
     this->epoches = epoches;
     this->learning_rate = learning_rate;
     this->extract_data();
-    this->m = sizeof(milage) / sizeof(milage[0]);
+    this->m = milage.size();
 }
 
 BGD::~BGD() {}
@@ -25,8 +25,8 @@ void BGD::extract_data() {
         std::getline(ss, s_milage, ',');
         std::getline(ss, s_price, ',');
 
-        int milage = std::stod(s_milage);
-        int price = std::stod(s_price);
+        double milage = std::stod(s_milage);
+        double price = std::stod(s_price);
 
         std::cout << milage << std::endl;
 
@@ -36,7 +36,7 @@ void BGD::extract_data() {
     }
 }
 
-double substraction(int nbr1, int nbr2) {
+double substraction(double nbr1, double nbr2) {
     return nbr1 - nbr2;
 }
 
@@ -61,8 +61,8 @@ double BGD::calculate_theta1() {
 }
 
 void BGD::update_predictions() {
-    double theta0 = this->tmp_thetas.theta0;
-    double theta1 = this->tmp_thetas.theta1;
+    double theta0 = this->thetas.theta0;
+    double theta1 = this->thetas.theta1;
 
     for (int i = 0; i < this->m; i++) {
         this->predictions[i] = theta0 + theta1 * this->milage[i];
@@ -70,8 +70,8 @@ void BGD::update_predictions() {
 }
 
 void BGD::update_thetas() {
-    this->thetas.theta0 = this->thetas.theta0 - this->tmp_thetas.theta0;
-    this->thetas.theta1 = this->thetas.theta1 - this->tmp_thetas.theta1;
+    this->thetas.theta0 -= this->tmp_thetas.theta0;
+    this->thetas.theta1 -= this->tmp_thetas.theta1;
 }
 
 void BGD::batch_gradient_descent() {
@@ -79,10 +79,9 @@ void BGD::batch_gradient_descent() {
         this->tmp_thetas.theta0 = this->calculate_theta0();
         this->tmp_thetas.theta1 = this->calculate_theta1();
 
-        this->update_predictions();
         this->update_thetas();
+        this->update_predictions();
     }
-
 }
 
 int main(int ac, char** av) {
@@ -92,7 +91,7 @@ int main(int ac, char** av) {
     }
 
     std::string filename = "../../data/data.csv";
-    BGD bgd = BGD(filename, 0.2, 100);
+    BGD bgd = BGD(filename, 0.01, 10000);
 
     bgd.batch_gradient_descent();
 
