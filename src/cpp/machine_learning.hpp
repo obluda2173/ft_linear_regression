@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -36,7 +37,10 @@ class BGD {
     double calculate_theta0();
     double calculate_theta1();
     void update_predictions();
+    void update_thetas();
     Thetas batch_gradient_descent();
 };
+
+std::vector<int> arr_to_vec(int arr[]);
 
 #endif // MACHINE_LEARNING_H_
