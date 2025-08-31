@@ -87,6 +87,26 @@ double BGD::predict(double milage) {
     return expected_price;
 }
 
+bool BGD::save_model(std::string file_path) {
+    std::string tmp = file_path + ".tmp";
+    std::ofstream out(tmp, std::ios::out | std::ios::trunc);
+    if (!out.is_open()) return false;
+
+    out << std::setprecision(17);
+    out << "{"
+        << "\"theta0\": " << this->thetas.theta0 << ", "
+        << "\"theta1\": " << this->thetas.theta1;
+    out << "}\n";
+
+    out.close();
+
+    if (std::rename(tmp.c_str(), file_path.c_str()) != 0) {
+        std::remove(tmp.c_str());
+        return false;
+    }
+    return true;
+}
+
 int main(int ac, char** av) {
     if (ac != 2) {
         std::cout << "Wrong amount of arguments" << std::endl;
@@ -101,7 +121,11 @@ int main(int ac, char** av) {
 
     bgd.train();
 
-    std::cout << "Expected price: " << bgd.predict(stod(std::string(av[1])) / 1000) << std::endl;
+    double expected_price = bgd.predict(stod(std::string(av[1])) / 1000);
+
+    std::cout << "Expected price: " << expected_price << std::endl;
+
+    bgd.save_model("../../data/model.json");
 
     return 0;
 }

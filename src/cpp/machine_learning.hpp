@@ -6,6 +6,9 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <iomanip>
+#include <cstdio>
+// #include <nlohmann/json.hpp>
 
 // python
 // #include <pybind11/pybind11.h>
@@ -39,6 +42,7 @@ class BGD {
     void update_thetas();
     void train();
     double predict(double milage);
+    bool save_model(std::string path);
 };
 
 std::vector<int> arr_to_vec(int arr[]);
