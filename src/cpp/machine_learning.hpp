@@ -37,7 +37,8 @@ class BGD {
     double calculate_theta1();
     void update_predictions();
     void update_thetas();
-    void batch_gradient_descent();
+    void train();
+    double predict(double milage);
 };
 
 std::vector<int> arr_to_vec(int arr[]);

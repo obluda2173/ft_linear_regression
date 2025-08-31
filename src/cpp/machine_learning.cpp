@@ -25,10 +25,8 @@ void BGD::extract_data() {
         std::getline(ss, s_milage, ',');
         std::getline(ss, s_price, ',');
 
-        double milage = std::stod(s_milage);
+        double milage = std::stod(s_milage) / 1000;
         double price = std::stod(s_price);
-
-        std::cout << milage << std::endl;
 
         this->milage.push_back(milage);
         this->price.push_back(price);
@@ -46,7 +44,7 @@ double BGD::calculate_theta0() {
     for (int i = 0; i < this->m; i++) {
         summ += substraction(this->predictions[i], this->price[i]);
     }
-    summ *= this->learning_rate * (1.0/this->m);
+    summ /= this->m;
     return summ;
 }
 
@@ -56,7 +54,7 @@ double BGD::calculate_theta1() {
     for (int i = 0; i < this->m; i++) {
         summ += substraction(this->predictions[i], this->price[i]) * this->milage[i];
     }
-    summ *= this->learning_rate * (1.0/this->m);
+    summ /= this->m;
     return summ;
 }
 
@@ -70,11 +68,11 @@ void BGD::update_predictions() {
 }
 
 void BGD::update_thetas() {
-    this->thetas.theta0 -= this->tmp_thetas.theta0;
-    this->thetas.theta1 -= this->tmp_thetas.theta1;
+    this->thetas.theta0 -= this->learning_rate * this->tmp_thetas.theta0;
+    this->thetas.theta1 -= this->learning_rate * this->tmp_thetas.theta1;
 }
 
-void BGD::batch_gradient_descent() {
+void BGD::train() {
     for (int epoch = 0; epoch < this->epoches; epoch++) {
         this->tmp_thetas.theta0 = this->calculate_theta0();
         this->tmp_thetas.theta1 = this->calculate_theta1();
@@ -84,6 +82,11 @@ void BGD::batch_gradient_descent() {
     }
 }
 
+double BGD::predict(double milage) {
+    double expected_price = milage * this->thetas.theta1 + this->thetas.theta0;
+    return expected_price;
+}
+
 int main(int ac, char** av) {
     if (ac != 2) {
         std::cout << "Wrong amount of arguments" << std::endl;
@@ -91,13 +94,14 @@ int main(int ac, char** av) {
     }
 
     std::string filename = "../../data/data.csv";
-    BGD bgd = BGD(filename, 0.01, 10000);
+    double lr = 0.0001;
+    int epoches = 10000000;
 
-    bgd.batch_gradient_descent();
+    BGD bgd = BGD(filename, lr, epoches);
 
-    double expected_price = atoi(av[1]) * bgd.thetas.theta1 + bgd.thetas.theta0;
+    bgd.train();
 
-    std::cout << "Expected price: " << expected_price << std::endl;
+    std::cout << "Expected price: " << bgd.predict(stod(std::string(av[1])) / 1000) << std::endl;
 
     return 0;
 }
