@@ -1,11 +1,9 @@
-#include "train.hpp"
+#include "BGD.hpp"
 
-BGD::BGD() {}
-
-BGD::BGD(std::string filename, double learning_rate, int epoches) {
-    this->filename = filename;
-    this->epoches = epoches;
-    this->learning_rate = learning_rate;
+BGD::BGD() {
+    this->filename = FILENAME;
+    this->epoches = EPOCHS;
+    this->learning_rate = LR;
     this->extract_data();
     this->m = milage.size();
 }
@@ -107,24 +105,10 @@ bool BGD::save_model(std::string file_path) {
     return true;
 }
 
-int main(int ac, char** av) {
-    if (ac != 2) {
-        std::cout << "Wrong amount of arguments" << std::endl;
-        exit(1);
-    }
-
-    std::string filename = "../../data/data.csv";
-    double lr = 0.0001;
-    int epoches = 10000000;
-
-    BGD bgd = BGD(filename, lr, epoches);
+int main() {
+    BGD bgd = BGD();
 
     bgd.train();
-
-    double expected_price = bgd.predict(stod(std::string(av[1])) / 1000);
-
-    std::cout << "Expected price: " << expected_price << std::endl;
-
     bgd.save_model("../../data/model.json");
 
     return 0;

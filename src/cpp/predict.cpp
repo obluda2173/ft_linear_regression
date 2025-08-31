@@ -1,4 +1,4 @@
-#include "train.hpp"
+#include "BGD.hpp"
 
 Thetas load_model(std::string& filename) {
     Thetas thetas;

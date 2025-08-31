@@ -1,5 +1,5 @@
-#ifndef TRAIN_HPP
-#define TRAIN_HPP
+#ifndef BGD_HPP
+#define BGD_HPP
 
 #include <iostream>
 #include <fstream>
@@ -9,9 +9,9 @@
 #include <iomanip>
 #include <cstdio>
 
-// python
-// #include <pybind11/pybind11.h>
-// #include <pybind11/numpy.h>
+#define FILENAME "../../data/data.csv";
+#define EPOCHS 10000000;
+#define LR 0.0001;
 
 struct Thetas {
     double theta0 = 0.0;
@@ -31,7 +31,6 @@ class BGD {
         Thetas thetas;
 
     BGD();
-    BGD(std::string filename, double learning_rate, int epoches);
     ~BGD();
 
     void extract_data();
@@ -46,4 +45,4 @@ class BGD {
 
 std::vector<int> arr_to_vec(int arr[]);
 
-#endif // TRAIN_HPP
+#endif // BGD_HPP
