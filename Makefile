@@ -2,11 +2,13 @@ CXX := g++
 CXXFLAGS := -std=c++17 -Wall -Wextra -Werror
 
 SRC_DIR := src/cpp
+SRC_PY := src/python
 DATA_DIR := data
 BUILD_DIR := bin
 
 TRAIN_SRC := $(SRC_DIR)/train.cpp
 PREDICT_SRC := $(SRC_DIR)/predict.cpp
+GRAPH_SRC := $(SRC_PY)/graph.py
 
 TRAIN_BIN := $(BUILD_DIR)/train
 PREDICT_BIN := $(BUILD_DIR)/predict
@@ -37,6 +39,10 @@ run-train: $(TRAIN_BIN)
 
 run-predict: $(PREDICT_BIN)
 	@cd $(SRC_DIR) && ../../$(PREDICT_BIN)
+
+graph: $(GRAPH_SRC)
+	@cd $(SRC_PY) && python3 graph.py
+	@echo "$(BLUE)✔ Graph generated$(RESET)"
 
 clean:
 	@rm -fr $(BUILD_DIR) $(DATA_DIR)/model.json
