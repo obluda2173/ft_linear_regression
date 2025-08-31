@@ -21,6 +21,8 @@ RESET := \033[0m
 all: $(TRAIN_BIN) $(PREDICT_BIN)
 	@echo "$(GREEN)✔ Build complete$(RESET)"
 
+re: clean all
+
 $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)
 

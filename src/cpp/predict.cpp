@@ -31,31 +31,31 @@ Thetas load_model(std::string& filename) {
     return thetas;
 }
 
-double predict(Thetas thetas, double milage) {
-    double prediction = thetas.theta1 * milage + thetas.theta0;
+double predict(Thetas thetas, double mileage) {
+    double prediction = thetas.theta1 * mileage + thetas.theta0;
 
     // std::cout << "theta0: " << thetas.theta0 << std::endl;
     // std::cout << "theta1: " << thetas.theta1 << std::endl;
-    // std::cout << "milage: " << milage << std::endl;
+    // std::cout << "mileage: " << mileage << std::endl;
 
     return prediction;
 }
 
 double prompt() {
-    double milage;
+    double mileage;
 
-    std::cout << "Enter milage: ";
-    std::cin >> milage;
-    return milage / 1000;
+    std::cout << "Enter mileage: ";
+    std::cin >> mileage;
+    return mileage / 1000;
 }
 
 int main() {
     std::string filename = "../../data/model.json";
     Thetas thetas = load_model(filename);
 
-    double milage = prompt();
+    double mileage = prompt();
 
-    double prediction = predict(thetas, milage);
+    double prediction = predict(thetas, mileage);
 
     std::cout << "Expected price: " << prediction << std::endl;
 

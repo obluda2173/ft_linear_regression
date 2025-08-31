@@ -5,7 +5,7 @@ BGD::BGD() {
     this->epoches = EPOCHS;
     this->learning_rate = LR;
     this->extract_data();
-    this->m = milage.size();
+    this->m = mileage.size();
 }
 
 BGD::~BGD() {}
@@ -18,15 +18,15 @@ void BGD::extract_data() {
 
     while (std::getline(csv_file, line)) {
         std::stringstream ss(line);
-        std::string s_milage, s_price;
+        std::string s_mileage, s_price;
 
-        std::getline(ss, s_milage, ',');
+        std::getline(ss, s_mileage, ',');
         std::getline(ss, s_price, ',');
 
-        double milage = std::stod(s_milage) / 1000;
+        double mileage = std::stod(s_mileage) / 1000;
         double price = std::stod(s_price);
 
-        this->milage.push_back(milage);
+        this->mileage.push_back(mileage);
         this->price.push_back(price);
         this->predictions.push_back(0.0);
     }
@@ -50,7 +50,7 @@ double BGD::calculate_theta1() {
     double summ = 0;
 
     for (int i = 0; i < this->m; i++) {
-        summ += substraction(this->predictions[i], this->price[i]) * this->milage[i];
+        summ += substraction(this->predictions[i], this->price[i]) * this->mileage[i];
     }
     summ /= this->m;
     return summ;
@@ -61,7 +61,7 @@ void BGD::update_predictions() {
     double theta1 = this->thetas.theta1;
 
     for (int i = 0; i < this->m; i++) {
-        this->predictions[i] = theta0 + theta1 * this->milage[i];
+        this->predictions[i] = theta0 + theta1 * this->mileage[i];
     }
 }
 
@@ -80,8 +80,8 @@ void BGD::train() {
     }
 }
 
-double BGD::predict(double milage) {
-    double expected_price = milage * this->thetas.theta1 + this->thetas.theta0;
+double BGD::predict(double mileage) {
+    double expected_price = mileage * this->thetas.theta1 + this->thetas.theta0;
     return expected_price;
 }
 

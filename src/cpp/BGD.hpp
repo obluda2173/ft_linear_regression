@@ -25,7 +25,7 @@ class BGD {
         double learning_rate;
         int m;
         std::vector<double> price;
-        std::vector<double> milage;
+        std::vector<double> mileage;
         std::vector<double> predictions;
         Thetas tmp_thetas;
         Thetas thetas;

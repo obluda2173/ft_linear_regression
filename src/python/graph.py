@@ -2,31 +2,30 @@ import sqlite3
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import json
 
 df = pd.read_csv("../../data/data.csv")
-# print(df)
 
 # printing the data table
 # print(df.plot(kind = "scatter", x = "km", y = "price"))
 
-# finding the mean on price and km values
 mean = df.mean()
 
 # accessing and printing the price mean value
 # print("Mean value of price: ", mean.loc["price"])
 
 # putting values in x_arr and y_arr
-x_arr = np.array(df.get("km"))
+x_arr = np.array(df.get("km")) / 1000
 y_arr = np.array(df.get("price"))
 
-# print(x_arr)
-# print(y_arr)
+with open("../../data/model.json", "r") as f:
+    parsed_thetas = json.load(f)
 
-# n = len(y_arr)
+intercept = parsed_thetas["theta0"]
+slope = parsed_thetas["theta1"]
 
-# getting intersection point and gradient
-# I should rewrite it myself
-slope, intercept = np.polyfit(x_arr, y_arr, deg = 1)
+plt.xlabel("mileage in km")
+plt.ylabel("cost")
 
 plt.plot(x_arr, y_arr, "yo", x_arr, slope * x_arr + intercept, "--k")
 plt.show()
