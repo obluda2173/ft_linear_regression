@@ -1,4 +1,4 @@
-#include "machine_learning.hpp"
+#include "train.hpp"
 
 BGD::BGD() {}
 

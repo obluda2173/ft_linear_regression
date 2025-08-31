@@ -1,5 +1,5 @@
-#ifndef MACHINE_LEARNING_H_
-#define MACHINE_LEARNING_H_
+#ifndef TRAIN_HPP
+#define TRAIN_HPP
 
 #include <iostream>
 #include <fstream>
@@ -8,7 +8,6 @@
 #include <vector>
 #include <iomanip>
 #include <cstdio>
-// #include <nlohmann/json.hpp>
 
 // python
 // #include <pybind11/pybind11.h>
@@ -47,4 +46,4 @@ class BGD {
 
 std::vector<int> arr_to_vec(int arr[]);
 
-#endif // MACHINE_LEARNING_H_
+#endif // TRAIN_HPP
