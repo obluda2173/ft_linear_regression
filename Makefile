@@ -11,25 +11,35 @@ PREDICT_SRC := $(SRC_DIR)/predict.cpp
 TRAIN_BIN := $(BUILD_DIR)/train
 PREDICT_BIN := $(BUILD_DIR)/predict
 
+RED   := \033[1;31m
+GREEN := \033[1;32m
+BLUE  := \033[1;34m
+RESET := \033[0m
+
 all: $(TRAIN_BIN) $(PREDICT_BIN)
+	@echo "$(GREEN)✔ Build complete$(RESET)"
 
 $(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)
 
 $(TRAIN_BIN): $(TRAIN_SRC) | $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) $< -o $@
+	@$(CXX) $(CXXFLAGS) $< -o $@
+	@echo "$(BLUE)✔ train built$(RESET)"
 
 $(PREDICT_BIN): $(PREDICT_SRC) | $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) $< -o $@
+	@$(CXX) $(CXXFLAGS) $< -o $@
+	@echo "$(BLUE)✔ predict built$(RESET)"
+
+run: run-train run-predict
 
 run-train: $(TRAIN_BIN)
-	cd $(SRC_DIR) && ../../$(TRAIN_BIN)
+	@cd $(SRC_DIR) && ../../$(TRAIN_BIN)
 
 run-predict: $(PREDICT_BIN)
-	cd $(SRC_DIR) && ../../$(PREDICT_BIN)
+	@cd $(SRC_DIR) && ../../$(PREDICT_BIN)
 
 clean:
-	rm -fr $(BUILD_DIR)
-	rm -fr $(DATA_DIR)/model.json
+	@rm -fr $(BUILD_DIR) $(DATA_DIR)/model.json
+	@echo "$(RED)✔ Cleaned$(RESET)"
 
 .PHONY: all clean run-train run-predict
