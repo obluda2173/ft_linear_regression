@@ -27,5 +27,8 @@ df2 = pd.read_csv("../../data/loss.csv")
 epoch = np.array(df2.get("epoch"))
 rmse = np.array(df2.get("rmse"))
 
+plt.xlabel("epoch")
+plt.ylabel("rmse")
+
 plt.plot(epoch, rmse)
 plt.show()
