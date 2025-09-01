@@ -8,6 +8,7 @@
 #include <vector>
 #include <iomanip>
 #include <cstdio>
+#include <cmath>
 
 #define FILENAME "../../data/data.csv";
 #define EPOCHS 10000000;
@@ -41,8 +42,11 @@ class BGD {
     void train();
     double predict(double milage);
     bool save_model(std::string path);
+    friend double calculate_mse(BGD& bgd);
 };
 
-std::vector<int> arr_to_vec(int arr[]);
+Thetas load_model(const std::string& filename);
+double predict(const Thetas& thetas, double mileage);
+double prompt();
 
 #endif // BGD_HPP
