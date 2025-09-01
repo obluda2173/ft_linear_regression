@@ -6,14 +6,6 @@ import json
 
 df = pd.read_csv("../../data/data.csv")
 
-# printing the data table
-# print(df.plot(kind = "scatter", x = "km", y = "price"))
-
-mean = df.mean()
-
-# accessing and printing the price mean value
-# print("Mean value of price: ", mean.loc["price"])
-
 # putting values in x_arr and y_arr
 x_arr = np.array(df.get("km")) / 1000
 y_arr = np.array(df.get("price"))
@@ -28,4 +20,12 @@ plt.xlabel("mileage in km")
 plt.ylabel("cost")
 
 plt.plot(x_arr, y_arr, "yo", x_arr, slope * x_arr + intercept, "--k")
+plt.show()
+
+df2 = pd.read_csv("../../data/loss.csv")
+
+epoch = np.array(df2.get("epoch"))
+rmse = np.array(df2.get("rmse"))
+
+plt.plot(epoch, rmse)
 plt.show()

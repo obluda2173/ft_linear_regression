@@ -34,7 +34,7 @@ $(TRAIN_BIN): $(TRAIN_SRC) $(BGD_SRC) $(UTILS_SRC) | $(BUILD_DIR)
 	@$(CXX) $(CXXFLAGS) $^ -o $@
 	@echo "$(BLUE)✔ train built$(RESET)"
 
-$(PREDICT_BIN): $(PREDICT_SRC) $(UTILS_SRC) | $(BUILD_DIR)
+$(PREDICT_BIN): $(PREDICT_SRC) $(UTILS_SRC) $(BGD_SRC) | $(BUILD_DIR)
 	@$(CXX) $(CXXFLAGS) $^ -o $@
 	@echo "$(BLUE)✔ predict built$(RESET)"
 
@@ -61,7 +61,7 @@ precision: $(PRECISION_BIN) train
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	@rm -fr $(BUILD_DIR) $(DATA_DIR)/model.json
+	@rm -fr $(BUILD_DIR) $(DATA_DIR)/model.json $(DATA_DIR)/loss.csv
 	@echo "$(RED)✔ Cleaned$(RESET)"
 
 .PHONY: all clean train predict graph precision

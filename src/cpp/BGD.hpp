@@ -11,7 +11,7 @@
 #include <cmath>
 
 #define FILENAME "../../data/data.csv";
-#define EPOCHS 10000000;
+#define EPOCHS 1000000;
 #define LR 0.0001;
 
 struct Thetas {
@@ -19,10 +19,15 @@ struct Thetas {
     double theta1 = 0.0;
 };
 
+struct LC {
+    size_t epoch;
+    double rmse;
+};
+
 class BGD {
     public:
         std::string filename;
-        int epoches;
+        size_t epoches;
         double learning_rate;
         int m;
         std::vector<double> price;
@@ -30,6 +35,7 @@ class BGD {
         std::vector<double> predictions;
         Thetas tmp_thetas;
         Thetas thetas;
+        std::vector<LC> lc;
 
     BGD();
     ~BGD();
@@ -43,10 +49,13 @@ class BGD {
     double predict(double milage);
     bool save_model(std::string path);
     friend double calculate_mse(BGD& bgd);
+    void create_loss_data(size_t epoch);
+    void save_loss_data(std::string file_path);
+    double calculate_mse();
+    double calculate_rmse(double mse);
 };
 
 Thetas load_model(const std::string& filename);
 double predict(const Thetas& thetas, double mileage);
-double prompt();
 
 #endif // BGD_HPP

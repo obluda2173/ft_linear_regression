@@ -71,12 +71,13 @@ void BGD::update_thetas() {
 }
 
 void BGD::train() {
-    for (int epoch = 0; epoch < this->epoches; epoch++) {
+    for (size_t epoch = 0; epoch < this->epoches; epoch++) {
         this->tmp_thetas.theta0 = this->calculate_theta0();
         this->tmp_thetas.theta1 = this->calculate_theta1();
 
         this->update_thetas();
         this->update_predictions();
+        this->create_loss_data(epoch);
     }
 }
 
@@ -103,4 +104,40 @@ bool BGD::save_model(std::string file_path) {
         return false;
     }
     return true;
+}
+
+double BGD::calculate_mse() {
+    double mse = 0.0;
+    size_t mileage_len = this->mileage.size();
+
+    for (size_t i = 0; i < mileage_len; i++) {
+        double tmp = this->price[i] - this->predict(this->mileage[i]);
+        mse += std::pow(tmp, 2);
+    }
+
+    mse /= mileage_len;
+    return mse;
+}
+
+double BGD::calculate_rmse(double mse) {
+    return sqrt(mse);
+}
+
+void BGD::create_loss_data(size_t epoch) {
+    double mse = this->calculate_mse();
+    double rmse = this->calculate_rmse(mse);
+    this->lc.push_back({epoch, rmse});
+}
+
+void BGD::save_loss_data(std::string file_path) {
+    std::ofstream file(file_path);
+    std::string header = "epoch,rmse\n";
+
+    file << header;
+    for (size_t i = 0; i < this->lc.size(); ++i) {
+        std::string epoch = std::to_string(this->lc[i].epoch);
+        std::string rmse = std::to_string(this->lc[i].rmse);
+        file << epoch << "," << rmse << "\n";
+    }
+    file.close();
 }
