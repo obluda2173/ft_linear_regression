@@ -1,0 +1,106 @@
+* README — Linear Regression (Org) — Erik An
+** Summary
+Short: simple linear-regression project (C++) that trains on data/data.csv, saves model to data/model.json, and has a small predictor and plotting script.
+Designed for learning: gradient descent implemented by you, no cheating with np.polyfit for the final model.
+
+** Repo layout
+#+BEGIN_SRC bash
+.
+├── data/
+│ ├── data.csv # dataset (km,price)
+│ └── model.json # saved model (theta0, theta1)
+├── src/
+│ ├── cpp/
+│ │ ├── BGD.hpp
+│ │ ├── BGD.cpp
+│ │ ├── train.cpp
+│ │ ├── predict.cpp
+│ │ ├── precision.cpp
+│ │ └── model_io.cpp
+│ └── python/
+│ └── graph.py
+├── bin/ # build output (created by Makefile)
+└── Makefile
+#+END_SRC
+
+** Requirements
+g++ (C++17), make
+
+Python 3 (for plotting script), matplotlib, pandas, numpy (optional)
+
+** Build & main Makefile targets
+Use the provided Makefile from project root.
+
+#+BEGIN_SRC bash
+
+build everything (compile train, predict, precision)
+
+make
+
+rebuild from scratch
+
+make re
+
+build and run trainind along with predictor
+
+make run
+
+build and run training (creates data/model.json)
+
+make train
+
+build and run prediction
+
+make predict
+
+build and run precision (computes MSE and RMSE)
+
+make precision
+
+create graphs (Python)
+
+make graph
+
+clean build artifacts and model
+
+make clean
+#+END_SRC
+
+** Typical workflow
+
+Inspect data:
+
+python3 src/python/graph.py (prints table / checks)
+
+Train model:
+
+make train
+
+writes data/model.json (atomic save)
+
+Predict:
+
+make predict and enter a mileage when prompted
+
+Evaluate:
+
+make precision — prints MSE, RMSE
+
+Visualize:
+
+make graph — runs src/python/graph.py to plot scatter + fitted line (I should add learning curve)
+
+** Model format (data/model.json)
+Saved as JSON with double precision. Minimal example:
+#+BEGIN_SRC json
+{
+    "theta0": 123.45678901234567,
+    "theta1": -0.0123456789012345,
+}
+#+END_SRC
+
+** How MSE/RMSE relate to units
+
+MSE units are squared (dollars^2). RMSE = sqrt(MSE) returns dollars and is easier to interpret.
+
+Example: MSE = 500000 ⇒ RMSE ≈ 707 dollars. Compare RMSE to mean price to judge reasonable error.
