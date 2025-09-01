@@ -109,7 +109,7 @@ Example: MSE = 500000 ⇒ RMSE ≈ 707 dollars. Compare RMSE to mean price to ju
 ** Graphs from bonus part
 
 Plotted records of the mileage/cost along with best fit line calculated in train.cpp:
-[[./media/mileage_cost_graph.png][- mileage vs cost graph]]
+- [[./media/mileage_cost_graph.png][- mileage vs cost graph]]
 
 Optional learning rate graph (epoch / Root Mean Square Error):
 - [[./media/epoch_rmse_graph.png][epoch vs rmse]]
